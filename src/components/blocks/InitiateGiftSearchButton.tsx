@@ -3,12 +3,10 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { DefaultError, useMutation } from "@tanstack/react-query";
 import { FunctionArgs, FunctionReturnType } from "convex/server";
-import { ConvexError } from "convex/values";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect } from "react";
 import { api } from "~convex/api";
 
-import Loader from "@/components/Loader";
 import {
     Select,
     SelectContent,

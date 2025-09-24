@@ -11,8 +11,6 @@ import SiteChanges from "@/components/blocks/Onboarding/SiteChanges";
 import WelcomeTerms from "@/components/blocks/Onboarding/WelcomeTerms";
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from "@/lib/links";
 
-const AnimatedInitiateGiftSearchButton = motion(InitiateGiftSearchButton);
-
 enum OnboardingStep {
     WelcomeTerms,
     PeopleConsent,

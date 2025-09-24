@@ -1,9 +1,12 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useGiftSearch } from "@/app/search/[id]/GiftSearchClientProvider";
+import SetBudget from "@/app/search/[id]/meta/SetBudget";
+import SetOccasion from "@/app/search/[id]/meta/SetOccasion";
 
 enum MetaStep {
     Occasion,
@@ -44,7 +47,7 @@ export default function SearchMetaPage() {
 
     useEffect(() => {
         if (giftSearch) {
-            advanceStep(-1);
+            advanceStep(step - 1);
         }
     }, [giftSearch]);
 
@@ -54,11 +57,22 @@ export default function SearchMetaPage() {
         }
     }, [step, router, giftSearch]);
 
+    console.log(step);
+
     return (
-        <main className="flex flex-1 flex-col items-center justify-center">
+        <motion.main
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-1 flex-col items-center justify-center gap-4"
+        >
             <h1 className="text-xl font-semibold sm:text-2xl">
                 We need to gather a bit more info first
             </h1>
-        </main>
+            <AnimatePresence mode="wait">
+                {step === MetaStep.Occasion && <SetOccasion key="occasion" />}
+                {step === MetaStep.Budget && <SetBudget key="budget" />}
+            </AnimatePresence>
+        </motion.main>
     );
 }
