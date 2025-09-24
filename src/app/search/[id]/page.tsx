@@ -21,5 +21,9 @@ export default async function Page({
         redirect(`/search/${id}/meta`);
     }
 
+    if (giftSearch.generationState !== "reconnaissance_complete") {
+        redirect(`/search/${id}/reconnaissance`);
+    }
+
     return <GiftSearch preloadedGiftSearch={preloadedGiftSearch} />;
 }

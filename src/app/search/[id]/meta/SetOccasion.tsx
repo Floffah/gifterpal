@@ -20,7 +20,7 @@ export default function SetOccasion() {
     const giftSearch = useGiftSearch();
 
     const updateGiftSearch = useMutation({
-        mutationFn: useConvexMutation(api.giftSearches.update),
+        mutationFn: useConvexMutation(api.giftSearches.general.update),
     });
 
     const [otherOccasionDialogOpen, setOtherOccasionDialogOpen] =

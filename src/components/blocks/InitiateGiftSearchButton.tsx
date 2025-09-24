@@ -24,11 +24,11 @@ export default function InitiateGiftSearchButton({
     const router = useRouter();
 
     const initiateSearchMutation = useMutation<
-        FunctionReturnType<typeof api.giftSearches.initiate>,
+        FunctionReturnType<typeof api.giftSearches.general.initiate>,
         DefaultError,
-        FunctionArgs<typeof api.giftSearches.initiate>
+        FunctionArgs<typeof api.giftSearches.general.initiate>
     >({
-        mutationFn: useConvexMutation(api.giftSearches.initiate),
+        mutationFn: useConvexMutation(api.giftSearches.general.initiate),
         onSuccess: async (id) => {
             if (onSearch) {
                 await onSearch();

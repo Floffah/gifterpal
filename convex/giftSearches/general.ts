@@ -1,7 +1,18 @@
-import { ConvexError, v } from "convex/values";
-import { mutation, query } from "~convex/server";
+import { createThread } from "@convex-dev/agent";
+import { ConvexError, Infer, v } from "convex/values";
+import { z } from "zod";
+import { api, components, internal } from "~convex/api";
+import {
+    internalAction,
+    internalMutation,
+    mutation,
+    query,
+} from "~convex/server";
 
-import { ensureUser } from "./lib/auth";
+import { systemPromptsDictionary } from "../codegen/prompts";
+import { questionsAgent } from "../lib/agents";
+import { ensureUser } from "../lib/auth";
+import { reconnaissanceQuestion } from "../types";
 
 export const initiate = mutation({
     args: v.object({
@@ -17,7 +28,6 @@ export const initiate = mutation({
         return await ctx.db.insert("giftSearches", {
             userId: user._id,
             relationship,
-            characteristics: [],
         });
     },
 });
@@ -35,6 +45,17 @@ export const get = query({
         }
 
         return giftSearch;
+    },
+});
+
+export const list = query({
+    handler: async (ctx) => {
+        const user = await ensureUser(ctx);
+
+        return await ctx.db
+            .query("giftSearches")
+            .filter((q) => q.eq(q.field("userId"), user._id))
+            .collect();
     },
 });
 

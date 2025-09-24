@@ -5,7 +5,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "~convex/api";
@@ -31,13 +31,20 @@ export default function Home() {
     const { signIn } = useAuthActions();
     const currentUserQuery = useQuery(convexQuery(api.user.currentUser, {}));
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         disabled: currentUserQuery.isPending,
     });
 
     const onSubmit = form.handleSubmit(async (data) => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
         await signIn("loops", data);
+        setIsSubmitting(false);
+        setIsSubmitted(true);
     });
 
     useEffect(() => {
@@ -53,7 +60,7 @@ export default function Home() {
             <main className="flex flex-col gap-4">
                 <h1 className="text-center text-2xl font-semibold">Login</h1>
 
-                {!form.formState.isSubmitted && (
+                {!isSubmitted && (
                     <Form {...form}>
                         <form
                             onSubmit={onSubmit}
@@ -78,24 +85,30 @@ export default function Home() {
                             <Button
                                 className="w-full"
                                 disabled={
-                                    currentUserQuery.isPending ||
-                                    form.formState.isSubmitting
+                                    currentUserQuery.isPending || isSubmitting
                                 }
                             >
                                 Get login link
-                                {(form.formState.isSubmitting ||
+                                {(isSubmitting ||
                                     currentUserQuery.isPending) && <Loader />}
                             </Button>
                         </form>
                     </Form>
                 )}
 
-                {form.formState.isSubmitted && (
+                {isSubmitted && (
                     <div className="text-center">
                         <p className="mb-2">
-                            Check your email for the login link!
+                            Check your email for the login link! <br />(
+                            {form.getValues().email})
                         </p>
-                        <Button variant="link" onClick={() => form.reset()}>
+                        <Button
+                            variant="link"
+                            onClick={() => {
+                                setIsSubmitted(false);
+                                form.reset();
+                            }}
+                        >
                             Back
                         </Button>
                     </div>

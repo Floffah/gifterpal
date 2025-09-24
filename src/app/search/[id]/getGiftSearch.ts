@@ -6,11 +6,12 @@ import { api } from "~convex/api";
 import { Id } from "~convex/dataModel";
 
 export const getGiftSearch = cache(async (id: string) => {
-    let preloadedGiftSearch: Preloaded<typeof api.giftSearches.get> | null =
-        null;
+    let preloadedGiftSearch: Preloaded<
+        typeof api.giftSearches.general.get
+    > | null = null;
     try {
         preloadedGiftSearch = await preloadQuery(
-            api.giftSearches.get,
+            api.giftSearches.general.get,
             {
                 giftSearchId: id as Id<"giftSearches">,
             },

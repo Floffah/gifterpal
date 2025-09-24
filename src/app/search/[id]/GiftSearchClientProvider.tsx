@@ -13,7 +13,7 @@ export const GiftSearchClientProvider = ({
     preloadedGiftSearch,
     children,
 }: PropsWithChildren<{
-    preloadedGiftSearch: Preloaded<typeof api.giftSearches.get>;
+    preloadedGiftSearch: Preloaded<typeof api.giftSearches.general.get>;
 }>) => {
     const giftSearch = usePreloadedQuery(preloadedGiftSearch)!;
 

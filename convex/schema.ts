@@ -2,6 +2,8 @@ import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+import { reconnaissanceQuestion } from "./types";
+
 const schema = defineSchema({
     ...authTables,
     users: defineTable({
@@ -23,8 +25,22 @@ const schema = defineSchema({
         occasion: v.optional(v.string()),
         relationship: v.string(),
         budget: v.optional(v.number()),
-        characteristics: v.array(v.string()),
+        generationState: v.optional(
+            v.union(
+                v.literal("generating_question"),
+                v.literal("waiting_for_user_answer"),
+                v.literal("ready_for_next_question"),
+                v.literal("reconnaissance_complete"),
+            ),
+        ),
+        threadId: v.optional(v.string()),
     }).index("byUser", ["userId"]),
+
+    giftReconnaissance: defineTable({
+        giftSearchId: v.id("giftSearches"),
+        question: reconnaissanceQuestion,
+        answer: v.optional(v.string()),
+    }).index("byGiftSearch", ["giftSearchId"]),
 
     recipients: defineTable({
         userId: v.id("users"),

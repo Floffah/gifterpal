@@ -6,7 +6,7 @@ import { api } from "~convex/api";
 export default function GiftSearch({
     preloadedGiftSearch,
 }: {
-    preloadedGiftSearch: Preloaded<typeof api.giftSearches.get>;
+    preloadedGiftSearch: Preloaded<typeof api.giftSearches.general.get>;
 }) {
     const giftSearch = usePreloadedQuery(preloadedGiftSearch)!;
 

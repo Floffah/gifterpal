@@ -28,7 +28,7 @@ const budgetOptions = [
 export default function SetBudget() {
     const giftSearch = useGiftSearch();
     const updateGiftSearch = useMutation({
-        mutationFn: useConvexMutation(api.giftSearches.update),
+        mutationFn: useConvexMutation(api.giftSearches.general.update),
     });
 
     const [otherBudgetDialogOpen, setOtherBudgetDialogOpen] = useState(false);

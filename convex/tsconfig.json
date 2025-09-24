@@ -21,7 +21,7 @@
         "noEmit": true,
         "paths": {
             "~convex/*": ["./_generated/*"]
-        }
+        },
     },
     "include": ["./**/*"],
     "exclude": ["./_generated"]
